@@ -58,13 +58,22 @@ class _LtsState extends State<Lts> {
   }
 
   void selectionMode() {
-    final modeMap = {
-      "Food": ["omelette", "noodle", "pickle", "turkey", "salad"],
-      "Animal": ["horse", "rabbit", "sheep", "eagle", "frog"],
-      "Weather": ["freeze", "cyclone", "cloudy", "temperature", "lightning"],
-      "Fruit": ["mango", "orange", "apricot", "coconut", "melon"],
-    };
-    mode = modeMap[widget.data] ?? [];
+    switch (widget.data) {
+      case "Food":
+        mode = ["omelette", "noodle", "pickle", "turkey", "salad"];
+        break;
+      case "Animal":
+        mode = ["horse", "rabbit", "sheep", "eagle", "frog"];
+        break;
+      case "Weather":
+        mode = ["freeze", "cyclone", "cloudy", "temperature", "lightning"];
+        break;
+      case "Fruit":
+        mode = ["mango", "orange", "apricot", "coconut", "melon"];
+        break;
+      default:
+        mode = [];
+    }
   }
 
   void checkAnswer(String word) {
