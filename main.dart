@@ -34,6 +34,10 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 92, 107, 129),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         actions: [
           IconButton(
             iconSize: 30,
@@ -44,43 +48,61 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            SizedBox(height: screenSize.height * 0.2),
-            const Text(
-              'Anjanko',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
+      body: Stack(
+        children: [
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.5),
+              BlendMode.darken,
             ),
-            SizedBox(height: screenSize.height * 0.2),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/second');
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize:
-                    Size(screenSize.width * 0.6, screenSize.height * 0.1),
-                backgroundColor: const Color.fromARGB(255, 0, 191, 89),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text(
-                'Start',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+            child: Image.asset(
+              'assets/bg.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'Anjanko',
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'MyCustomFont',
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.2),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/second');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize:
+                        Size(screenSize.width * 0.8, screenSize.height * 0.08),
+                    backgroundColor: const Color.fromARGB(255, 159, 130, 151),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Start',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: 'MyCustomFont',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
