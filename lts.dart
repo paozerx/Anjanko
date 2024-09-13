@@ -60,16 +60,20 @@ class _LtsState extends State<Lts> {
   void selectionMode() {
     switch (widget.data) {
       case "Food":
-        mode = ["omelette", "noodle", "pickle", "turkey", "salad"];
+        mode = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
+        mode.shuffle();
         break;
       case "Animal":
-        mode = ["horse", "rabbit", "sheep", "eagle", "frog"];
+        mode = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
+        mode.shuffle();
         break;
       case "Weather":
-        mode = ["freeze", "cyclone", "cloudy", "temperature", "lightning"];
+        mode = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
+        mode.shuffle();
         break;
       case "Fruit":
-        mode = ["mango", "orange", "apricot", "coconut", "melon"];
+        mode = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
+        mode.shuffle();
         break;
       default:
         mode = [];
