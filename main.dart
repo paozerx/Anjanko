@@ -30,6 +30,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -46,7 +48,7 @@ class MyHomePage extends StatelessWidget {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const SizedBox(height: 150),
+            SizedBox(height: screenSize.height * 0.2),
             const Text(
               'Anjanko',
               style: TextStyle(
@@ -55,14 +57,15 @@ class MyHomePage extends StatelessWidget {
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
-            const SizedBox(height: 200),
+            SizedBox(height: screenSize.height * 0.2),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/second');
               },
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 80),
-                backgroundColor: Color.fromARGB(255, 0, 191, 89),
+                minimumSize:
+                    Size(screenSize.width * 0.6, screenSize.height * 0.1),
+                backgroundColor: const Color.fromARGB(255, 0, 191, 89),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -100,7 +103,7 @@ class Setting extends StatelessWidget {
             alignment: Alignment.center,
             child: const Center(
               child: Text(
-                "Beta Test 0.0.0",
+                "Beta Test 0.0.0.5",
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
