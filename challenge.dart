@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Lts extends StatefulWidget {
-  final String data;
-  const Lts({super.key, required this.data});
+class Challenge extends StatefulWidget {
+  const Challenge({super.key});
 
   @override
-  State<Lts> createState() => _LtsState();
+  State<Challenge> createState() => _ChallengeState();
 }
 
-class _LtsState extends State<Lts> {
+class _ChallengeState extends State<Challenge> {
   int current = 0;
   late List<String> mode;
   late SpeechToText _speechToText;
@@ -19,6 +20,9 @@ class _LtsState extends State<Lts> {
   bool speechEnabled = false;
   String lastWords = '';
   Color containerColor = const Color.fromARGB(255, 175, 174, 174);
+  Timer? _timer; // เปลี่ยนเป็น Timer? เพื่อรองรับค่า null
+  int _start = 0;
+  int bestTime = 0;
 
   @override
   void initState() {
@@ -27,6 +31,8 @@ class _LtsState extends State<Lts> {
     _flutterTts = FlutterTts();
     _initSpeech();
     selectionMode();
+    _loadBestTime();
+    _startTimer();
   }
 
   Future<void> _initSpeech() async {
@@ -59,34 +65,42 @@ class _LtsState extends State<Lts> {
   }
 
   void selectionMode() {
-    switch (widget.data) {
-      case "Food":
-        mode = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
-        mode.shuffle();
-        break;
-      case "Animal":
-        mode = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
-        mode.shuffle();
-        break;
-      case "Weather":
-        mode = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
-        mode.shuffle();
-        break;
-      case "Fruit":
-        mode = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
-        mode.shuffle();
-        break;
-      case "Color":
-        mode = ["Black", "White", "Purple", "Pink", "Brown", "Gray"];
-        mode.shuffle();
-        break;
-      case "Body":
-        mode = ["Shoulder", "Knee", "Chest", "Forehead", "Eyelash", "Cheek"];
-        mode.shuffle();
-        break;
-      default:
-        mode = [];
-    }
+    mode = [
+      "Omelette",
+      "Noodle",
+      "Pickle",
+      "Turkey",
+      "Salad",
+      "Elephant",
+      "Rabbit",
+      "Cat",
+      "Eagle",
+      "Frog",
+      "Rainy",
+      "Cyclone",
+      "Cloudy",
+      "Temperature",
+      "Lightning",
+      "Mango",
+      "Orange",
+      "Apricot",
+      "Coconut",
+      "Apple",
+      "Black",
+      "White",
+      "Purple",
+      "Pink",
+      "Brown",
+      "Gray",
+      "Shoulder",
+      "Knee",
+      "Chest",
+      "Forehead",
+      "Eyelash",
+      "Cheek"
+    ];
+    mode.shuffle();
+    mode = mode.sublist(0, 10); // ปรับเป็น 10 ตัวแรก
   }
 
   void checkAnswer(String word) {
@@ -101,8 +115,7 @@ class _LtsState extends State<Lts> {
           lastWords = '';
         });
       });
-    } else if (word.toLowerCase() != mode[current].toLowerCase() &&
-        word.isNotEmpty) {
+    } else if (word.isNotEmpty) {
       setState(() {
         containerColor = Colors.red;
       });
@@ -114,6 +127,52 @@ class _LtsState extends State<Lts> {
     }
   }
 
+  void _startTimer() {
+    _start = 0;
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (current < mode.length) {
+        setState(() {
+          _start++;
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  String formatTime(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
+    return '$minutesStr:$secondsStr';
+  }
+
+  Future<void> _saveBestTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (bestTime == 0 || _start < bestTime) {
+      setState(() {
+        bestTime = _start;
+      });
+      await prefs.setInt('bestTime', bestTime);
+    }
+  }
+
+  Future<void> _loadBestTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.remove('bestTime');
+    int savedBestTime = prefs.getInt('bestTime') ?? 0;
+    setState(() {
+      bestTime = savedBestTime;
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -123,7 +182,7 @@ class _LtsState extends State<Lts> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.data,
+            "Challenge",
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -131,7 +190,25 @@ class _LtsState extends State<Lts> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: screenHeight * 0.03),
+            SizedBox(height: screenHeight * 0.01),
+            Row(
+              children: <Widget>[
+                SizedBox(width: screenWidth * 0.05),
+                Text(
+                  'Best Time: ${formatTime(bestTime)}',
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: screenWidth * 0.22),
+                Text(
+                  'Time: ${formatTime(_start)}',
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
             Center(
               child: Container(
                 width: screenWidth * 0.9,
@@ -168,13 +245,17 @@ class _LtsState extends State<Lts> {
                 ),
               ),
             if (lastWords.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  ' ',
-                  style: TextStyle(fontSize: 18),
+                  'You said:',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+            SizedBox(height: screenHeight * 0.05),
             if (!speechEnabled)
               const Text(
                 'Speech recognition not available.',
@@ -196,19 +277,32 @@ class _LtsState extends State<Lts> {
         ),
       );
     } else {
+      _saveBestTime();
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.data,
+            "Challenge",
             style: TextStyle(
                 fontSize: screenWidth * 0.06, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        body: const Center(
-          child: Text(
-            'You have completed.',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Your Last Time: ${formatTime(_start)}',
+                style: TextStyle(
+                    fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              Text(
+                'Your Best Time: ${formatTime(bestTime)}',
+                style: TextStyle(
+                    fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
       );

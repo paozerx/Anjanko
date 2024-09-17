@@ -15,14 +15,14 @@ class Select extends StatelessWidget {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 92, 107, 129),
+        backgroundColor: const Color.fromARGB(255, 104, 84, 84),
       ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/bg.png'),
+            image: AssetImage('assets/bgo.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -77,7 +77,7 @@ class Select extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage('assets/food.jpg'),
+                              image: AssetImage('assets/food.png'),
                               width: 60,
                               height: 60,
                             ),
@@ -117,7 +117,7 @@ class Select extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage('assets/animal.jpg'),
+                              image: AssetImage('assets/animal.png'),
                               width: 60,
                               height: 60,
                             ),
@@ -164,7 +164,7 @@ class Select extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage('assets/weather.jpg'),
+                              image: AssetImage('assets/weather.png'),
                               width: 60,
                               height: 60,
                             ),
@@ -204,7 +204,7 @@ class Select extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage('assets/fruit.jpg'),
+                              image: AssetImage('assets/fruit.png'),
                               width: 60,
                               height: 60,
                             ),
@@ -251,7 +251,7 @@ class Select extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image(
-                              image: AssetImage('assets/body.jpg'),
+                              image: AssetImage('assets/body.png'),
                               width: 60,
                               height: 60,
                             ),

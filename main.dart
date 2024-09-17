@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'select.dart';
+import 'challenge.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(),
         '/second': (context) => const Select(),
         '/settings': (context) => const Setting(),
+        '/challenge': (context) => const Challenge(),
       },
     );
   }
@@ -34,7 +36,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 92, 107, 129),
+        backgroundColor: const Color.fromARGB(255, 104, 84, 84),
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
@@ -56,7 +58,7 @@ class MyHomePage extends StatelessWidget {
               BlendMode.darken,
             ),
             child: Image.asset(
-              'assets/bg.png',
+              'assets/bgo.jpg',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
@@ -99,6 +101,29 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: screenSize.height * 0.02),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/challenge');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize:
+                        Size(screenSize.width * 0.8, screenSize.height * 0.08),
+                    backgroundColor: const Color.fromARGB(255, 159, 130, 151),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Challenge',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: 'MyCustomFont',
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -125,7 +150,7 @@ class Setting extends StatelessWidget {
             alignment: Alignment.center,
             child: const Center(
               child: Text(
-                "Beta Test 0.0.0.5",
+                "Beta Test 0.0.1",
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
