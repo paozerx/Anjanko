@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'lts.dart';
+import 'practice.dart';
 
 class Select extends StatelessWidget {
   const Select({super.key});
@@ -67,7 +67,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Food'),
+                              builder: (context) => const Practice(data: 'Food'),
                             ),
                           );
                         },
@@ -118,7 +118,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Animal'),
+                              builder: (context) => const Practice(data: 'Animal'),
                             ),
                           );
                         },
@@ -176,7 +176,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Weather'),
+                              builder: (context) => const Practice(data: 'Weather'),
                             ),
                           );
                         },
@@ -227,7 +227,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Fruit'),
+                              builder: (context) => const Practice(data: 'Fruit'),
                             ),
                           );
                         },
@@ -285,7 +285,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Body'),
+                              builder: (context) => const Practice(data: 'Body'),
                             ),
                           );
                         },
@@ -336,7 +336,7 @@ class Select extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Lts(data: 'Color'),
+                              builder: (context) => const Practice(data: 'Color'),
                             ),
                           );
                         },

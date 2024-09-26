@@ -2,28 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Challenge extends StatefulWidget {
-  const Challenge({super.key});
+class Practice extends StatefulWidget {
+  final String data;
+  const Practice({super.key, required this.data});
 
   @override
-  State<Challenge> createState() => _ChallengeState();
+  State<Practice> createState() => _PracticeState();
 }
 
-class _ChallengeState extends State<Challenge> {
+class _PracticeState extends State<Practice> {
   int current = 0;
   late List<String> wordList;
   late SpeechToText speechToText;
   late FlutterTts flutterTts;
   bool speechEnabled = false;
   String lastWords = '';
-  Color containerColor = const Color.fromARGB(255, 175, 174, 174);
-  Timer? timer;
-  int start = 0;
   bool isListening = false;
-  int bestTime = 0;
+  Color containerColor = const Color.fromARGB(255, 175, 174, 174);
 
   @override
   void initState() {
@@ -32,8 +28,6 @@ class _ChallengeState extends State<Challenge> {
     flutterTts = FlutterTts();
     _initSpeech();
     selectionWordList();
-    loadBestTime();
-    startTimer();
   }
 
   Future<void> _initSpeech() async {
@@ -70,42 +64,41 @@ class _ChallengeState extends State<Challenge> {
   }
 
   void selectionWordList() {
-    wordList = [
-      "Omelette",
-      "Noodle",
-      "Pickle",
-      "Turkey",
-      "Salad",
-      "Elephant",
-      "Rabbit",
-      "Cat",
-      "Eagle",
-      "Frog",
-      "Rainy",
-      "Cyclone",
-      "Cloudy",
-      "Temperature",
-      "Lightning",
-      "Mango",
-      "Orange",
-      "Apricot",
-      "Coconut",
-      "Apple",
-      "Black",
-      "White",
-      "Purple",
-      "Pink",
-      "Brown",
-      "Gray",
-      "Shoulder",
-      "Knee",
-      "Chest",
-      "Forehead",
-      "Eyelash",
-      "Cheek"
-    ];
-    wordList.shuffle();
-    wordList = wordList.sublist(0, 10);
+    switch (widget.data) {
+      case "Food":
+        wordList = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
+        wordList.shuffle();
+        break;
+      case "Animal":
+        wordList = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
+        wordList.shuffle();
+        break;
+      case "Weather":
+        wordList = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
+        wordList.shuffle();
+        break;
+      case "Fruit":
+        wordList = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
+        wordList.shuffle();
+        break;
+      case "Color":
+        wordList = ["Black", "White", "Purple", "Pink", "Brown", "Gray"];
+        wordList.shuffle();
+        break;
+      case "Body":
+        wordList = [
+          "Shoulder",
+          "Knee",
+          "Chest",
+          "Forehead",
+          "Eyelash",
+          "Cheek"
+        ];
+        wordList.shuffle();
+        break;
+      default:
+        wordList = [];
+    }
   }
 
   void checkAnswer(String word) {
@@ -120,7 +113,8 @@ class _ChallengeState extends State<Challenge> {
           lastWords = '';
         });
       });
-    } else if (word.isNotEmpty) {
+    } else if (word.toLowerCase() != wordList[current].toLowerCase() &&
+        word.isNotEmpty) {
       setState(() {
         containerColor = Colors.red;
       });
@@ -130,46 +124,6 @@ class _ChallengeState extends State<Challenge> {
         });
       });
     }
-  }
-
-  void startTimer() {
-    start = 0;
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (current < wordList.length) {
-        setState(() {
-          start++;
-        });
-      } else {
-        timer.cancel();
-      }
-    });
-  }
-
-  String formatTime(int seconds) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    String minutesStr = minutes.toString().padLeft(2, '0');
-    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
-    return '$minutesStr:$secondsStr';
-  }
-
-  Future<void> saveBestTime() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (bestTime == 0 || start < bestTime) {
-      setState(() {
-        bestTime = start;
-      });
-      await prefs.setInt('bestTime', bestTime);
-    }
-  }
-
-  Future<void> loadBestTime() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.remove('bestTime');
-    int savedBestTime = prefs.getInt('bestTime') ?? 0;
-    setState(() {
-      bestTime = savedBestTime;
-    });
   }
   void handleMicButtonPressed() {
     setState(() {
@@ -184,11 +138,6 @@ class _ChallengeState extends State<Challenge> {
     });
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +148,7 @@ class _ChallengeState extends State<Challenge> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Challenge",
+            widget.data,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -207,25 +156,7 @@ class _ChallengeState extends State<Challenge> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: screenHeight * 0.01),
-            Row(
-              children: <Widget>[
-                SizedBox(width: screenWidth * 0.05),
-                Text(
-                  'Best Time: ${formatTime(bestTime)}',
-                  style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(width: screenWidth * 0.22),
-                Text(
-                  'Time: ${formatTime(start)}',
-                  style: TextStyle(
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            SizedBox(height: screenHeight * 0.03),
             Center(
               child: Container(
                 width: screenWidth * 0.9,
@@ -262,17 +193,13 @@ class _ChallengeState extends State<Challenge> {
                 ),
               ),
             if (lastWords.isEmpty)
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'You said:',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.05,
-                    color: Colors.white,
-                  ),
+                  ' ',
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
-            SizedBox(height: screenHeight * 0.05),
             if (!speechEnabled)
               const Text(
                 'Speech recognition not available.',
@@ -297,32 +224,19 @@ class _ChallengeState extends State<Challenge> {
         ),
       );
     } else {
-      saveBestTime();
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Challenge",
+            widget.data,
             style: TextStyle(
                 fontSize: screenWidth * 0.06, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Your Last Time: ${formatTime(start)}',
-                style: TextStyle(
-                    fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Text(
-                'Your Best Time: ${formatTime(bestTime)}',
-                style: TextStyle(
-                    fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
-              ),
-            ],
+        body: const Center(
+          child: Text(
+            'You have completed.',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
         ),
       );
