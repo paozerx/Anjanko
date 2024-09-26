@@ -76,6 +76,13 @@ class MyHomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontFamily: 'MyCustomFont',
+                    shadows: [
+                      Shadow(
+                        offset: Offset(2, 2),
+                        blurRadius: 10,
+                        color: Colors.black,
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: screenSize.height * 0.2),
@@ -86,18 +93,31 @@ class MyHomePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     minimumSize:
                         Size(screenSize.width * 0.8, screenSize.height * 0.08),
-                    backgroundColor: const Color.fromARGB(255, 159, 130, 151),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                    backgroundColor: const Color.fromARGB(255, 255, 161, 21),
+                    shadowColor: Colors.black,
+                    elevation: 10,
+                    shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
                     ),
                   ),
                   child: const Text(
                     'Start',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontFamily: 'MyCustomFont',
+                      shadows: [
+                        Shadow(
+                          offset: Offset(2, 2),
+                          blurRadius: 10,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -109,18 +129,29 @@ class MyHomePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     minimumSize:
                         Size(screenSize.width * 0.8, screenSize.height * 0.08),
-                    backgroundColor: const Color.fromARGB(255, 159, 130, 151),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                    backgroundColor: const Color.fromARGB(255, 255, 161, 21),
+                    shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
                     ),
                   ),
                   child: const Text(
                     'Challenge',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontFamily: 'MyCustomFont',
+                      shadows: [
+                        Shadow(
+                          offset: Offset(2, 2),
+                          blurRadius: 10,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                   ),
                 ),

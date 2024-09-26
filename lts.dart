@@ -13,9 +13,9 @@ class Lts extends StatefulWidget {
 
 class _LtsState extends State<Lts> {
   int current = 0;
-  late List<String> mode;
-  late SpeechToText _speechToText;
-  late FlutterTts _flutterTts;
+  late List<String> wordList;
+  late SpeechToText speechToText;
+  late FlutterTts flutterTts;
   bool speechEnabled = false;
   String lastWords = '';
   Color containerColor = const Color.fromARGB(255, 175, 174, 174);
@@ -23,28 +23,28 @@ class _LtsState extends State<Lts> {
   @override
   void initState() {
     super.initState();
-    _speechToText = SpeechToText();
-    _flutterTts = FlutterTts();
+    speechToText = SpeechToText();
+    flutterTts = FlutterTts();
     _initSpeech();
-    selectionMode();
+    selectionWordList();
   }
 
   Future<void> _initSpeech() async {
-    speechEnabled = await _speechToText.initialize();
+    speechEnabled = await speechToText.initialize();
     setState(() {});
   }
 
-  void _startListening() async {
+  void startListening() async {
     if (speechEnabled) {
-      await _speechToText.listen(
-        onResult: _onSpeechResult,
+      await speechToText.listen(
+        onResult: onSpeechResult,
         localeId: 'en_US',
       );
       setState(() {});
     }
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) {
+  void onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       lastWords = result.recognizedWords;
       checkAnswer(lastWords);
@@ -52,45 +52,52 @@ class _LtsState extends State<Lts> {
   }
 
   Future<void> speaks() async {
-    if (mode.isNotEmpty) {
-      await _flutterTts.setLanguage('en-US');
-      await _flutterTts.speak(mode[current]);
+    if (wordList.isNotEmpty) {
+      await flutterTts.setLanguage('en-US');
+      await flutterTts.speak(wordList[current]);
     }
   }
 
-  void selectionMode() {
+  void selectionWordList() {
     switch (widget.data) {
       case "Food":
-        mode = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
-        mode.shuffle();
+        wordList = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
+        wordList.shuffle();
         break;
       case "Animal":
-        mode = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
-        mode.shuffle();
+        wordList = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
+        wordList.shuffle();
         break;
       case "Weather":
-        mode = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
-        mode.shuffle();
+        wordList = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
+        wordList.shuffle();
         break;
       case "Fruit":
-        mode = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
-        mode.shuffle();
+        wordList = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
+        wordList.shuffle();
         break;
       case "Color":
-        mode = ["Black", "White", "Purple", "Pink", "Brown", "Gray"];
-        mode.shuffle();
+        wordList = ["Black", "White", "Purple", "Pink", "Brown", "Gray"];
+        wordList.shuffle();
         break;
       case "Body":
-        mode = ["Shoulder", "Knee", "Chest", "Forehead", "Eyelash", "Cheek"];
-        mode.shuffle();
+        wordList = [
+          "Shoulder",
+          "Knee",
+          "Chest",
+          "Forehead",
+          "Eyelash",
+          "Cheek"
+        ];
+        wordList.shuffle();
         break;
       default:
-        mode = [];
+        wordList = [];
     }
   }
 
   void checkAnswer(String word) {
-    if (word.toLowerCase() == mode[current].toLowerCase()) {
+    if (word.toLowerCase() == wordList[current].toLowerCase()) {
       setState(() {
         containerColor = Colors.green;
       });
@@ -101,7 +108,7 @@ class _LtsState extends State<Lts> {
           lastWords = '';
         });
       });
-    } else if (word.toLowerCase() != mode[current].toLowerCase() &&
+    } else if (word.toLowerCase() != wordList[current].toLowerCase() &&
         word.isNotEmpty) {
       setState(() {
         containerColor = Colors.red;
@@ -119,7 +126,7 @@ class _LtsState extends State<Lts> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    if (current < mode.length) {
+    if (current < wordList.length) {
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -144,7 +151,7 @@ class _LtsState extends State<Lts> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      mode[current],
+                      wordList[current],
                       style: TextStyle(
                           fontSize: screenWidth * 0.08,
                           fontWeight: FontWeight.bold),
@@ -184,12 +191,12 @@ class _LtsState extends State<Lts> {
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 159, 130, 151),
+                  color: const Color.fromARGB(255, 255, 161, 21),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: IconButton(
                   icon: Icon(Icons.mic, size: screenWidth * 0.15),
-                  onPressed: _startListening,
+                  onPressed: startListening,
                 ),
               ),
           ],

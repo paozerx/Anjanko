@@ -47,6 +47,13 @@ class Select extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 255, 255, 255),
                       fontFamily: 'MyCustomFont',
+                      shadows: [
+                        Shadow(
+                          offset: Offset(2, 2),
+                          blurRadius: 10,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -68,9 +75,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -87,8 +98,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -108,9 +126,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -127,8 +149,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -155,9 +184,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -174,8 +207,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -195,9 +235,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -214,8 +258,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -242,9 +293,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -261,8 +316,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -282,9 +344,13 @@ class Select extends StatelessWidget {
                           minimumSize: Size(
                               screenSize.width * 0.4, screenSize.width * 0.4),
                           backgroundColor:
-                              const Color.fromARGB(255, 159, 130, 151),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                              const Color.fromARGB(255, 255, 161, 21),
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
                           ),
                         ),
                         child: const Column(
@@ -301,8 +367,15 @@ class Select extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontFamily: 'MyCustomFont',
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 10,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                           ],

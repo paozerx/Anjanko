@@ -14,43 +14,43 @@ class Challenge extends StatefulWidget {
 
 class _ChallengeState extends State<Challenge> {
   int current = 0;
-  late List<String> mode;
-  late SpeechToText _speechToText;
-  late FlutterTts _flutterTts;
+  late List<String> wordList;
+  late SpeechToText speechToText;
+  late FlutterTts flutterTts;
   bool speechEnabled = false;
   String lastWords = '';
   Color containerColor = const Color.fromARGB(255, 175, 174, 174);
-  Timer? _timer; // เปลี่ยนเป็น Timer? เพื่อรองรับค่า null
-  int _start = 0;
+  Timer? timer;
+  int start = 0;
   int bestTime = 0;
 
   @override
   void initState() {
     super.initState();
-    _speechToText = SpeechToText();
-    _flutterTts = FlutterTts();
+    speechToText = SpeechToText();
+    flutterTts = FlutterTts();
     _initSpeech();
-    selectionMode();
-    _loadBestTime();
-    _startTimer();
+    selectionWordList();
+    loadBestTime();
+    startTimer();
   }
 
   Future<void> _initSpeech() async {
-    speechEnabled = await _speechToText.initialize();
+    speechEnabled = await speechToText.initialize();
     setState(() {});
   }
 
-  void _startListening() async {
+  void startListening() async {
     if (speechEnabled) {
-      await _speechToText.listen(
-        onResult: _onSpeechResult,
+      await speechToText.listen(
+        onResult: onSpeechResult,
         localeId: 'en_US',
       );
       setState(() {});
     }
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) {
+  void onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       lastWords = result.recognizedWords;
       checkAnswer(lastWords);
@@ -58,14 +58,14 @@ class _ChallengeState extends State<Challenge> {
   }
 
   Future<void> speaks() async {
-    if (mode.isNotEmpty) {
-      await _flutterTts.setLanguage('en-US');
-      await _flutterTts.speak(mode[current]);
+    if (wordList.isNotEmpty) {
+      await flutterTts.setLanguage('en-US');
+      await flutterTts.speak(wordList[current]);
     }
   }
 
-  void selectionMode() {
-    mode = [
+  void selectionWordList() {
+    wordList = [
       "Omelette",
       "Noodle",
       "Pickle",
@@ -99,12 +99,12 @@ class _ChallengeState extends State<Challenge> {
       "Eyelash",
       "Cheek"
     ];
-    mode.shuffle();
-    mode = mode.sublist(0, 10); // ปรับเป็น 10 ตัวแรก
+    wordList.shuffle();
+    wordList = wordList.sublist(0, 10);
   }
 
   void checkAnswer(String word) {
-    if (word.toLowerCase() == mode[current].toLowerCase()) {
+    if (word.toLowerCase() == wordList[current].toLowerCase()) {
       setState(() {
         containerColor = Colors.green;
       });
@@ -127,15 +127,15 @@ class _ChallengeState extends State<Challenge> {
     }
   }
 
-  void _startTimer() {
-    _start = 0;
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (current < mode.length) {
+  void startTimer() {
+    start = 0;
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (current < wordList.length) {
         setState(() {
-          _start++;
+          start++;
         });
       } else {
-        _timer?.cancel();
+        timer.cancel();
       }
     });
   }
@@ -148,17 +148,17 @@ class _ChallengeState extends State<Challenge> {
     return '$minutesStr:$secondsStr';
   }
 
-  Future<void> _saveBestTime() async {
+  Future<void> saveBestTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (bestTime == 0 || _start < bestTime) {
+    if (bestTime == 0 || start < bestTime) {
       setState(() {
-        bestTime = _start;
+        bestTime = start;
       });
       await prefs.setInt('bestTime', bestTime);
     }
   }
 
-  Future<void> _loadBestTime() async {
+  Future<void> loadBestTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.remove('bestTime');
     int savedBestTime = prefs.getInt('bestTime') ?? 0;
@@ -169,7 +169,7 @@ class _ChallengeState extends State<Challenge> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -178,7 +178,7 @@ class _ChallengeState extends State<Challenge> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    if (current < mode.length) {
+    if (current < wordList.length) {
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -202,7 +202,7 @@ class _ChallengeState extends State<Challenge> {
                 ),
                 SizedBox(width: screenWidth * 0.22),
                 Text(
-                  'Time: ${formatTime(_start)}',
+                  'Time: ${formatTime(start)}',
                   style: TextStyle(
                       fontSize: screenWidth * 0.05,
                       fontWeight: FontWeight.bold),
@@ -221,7 +221,7 @@ class _ChallengeState extends State<Challenge> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      mode[current],
+                      wordList[current],
                       style: TextStyle(
                           fontSize: screenWidth * 0.08,
                           fontWeight: FontWeight.bold),
@@ -265,19 +265,19 @@ class _ChallengeState extends State<Challenge> {
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 159, 130, 151),
+                  color: const Color.fromARGB(255, 255, 161, 21),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: IconButton(
                   icon: Icon(Icons.mic, size: screenWidth * 0.15),
-                  onPressed: _startListening,
+                  onPressed: startListening,
                 ),
               ),
           ],
         ),
       );
     } else {
-      _saveBestTime();
+      saveBestTime();
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -292,7 +292,7 @@ class _ChallengeState extends State<Challenge> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Last Time: ${formatTime(_start)}',
+                'Your Last Time: ${formatTime(start)}',
                 style: TextStyle(
                     fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
               ),
