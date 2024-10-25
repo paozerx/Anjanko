@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:translator/translator.dart';
 
 class Practice extends StatefulWidget {
   final String data;
@@ -17,9 +18,12 @@ class _PracticeState extends State<Practice> {
   late SpeechToText speechToText;
   late FlutterTts flutterTts;
   bool speechEnabled = false;
+  bool checkAns = false;
   String lastWords = '';
+  String translation = '';
   bool isListening = false;
   Color containerColor = const Color.fromARGB(255, 175, 174, 174);
+  final translator = GoogleTranslator();
 
   @override
   void initState() {
@@ -44,6 +48,7 @@ class _PracticeState extends State<Practice> {
       setState(() {});
     }
   }
+
   void stopListening() async {
     await speechToText.stop();
     setState(() {});
@@ -66,33 +71,96 @@ class _PracticeState extends State<Practice> {
   void selectionWordList() {
     switch (widget.data) {
       case "Food":
-        wordList = ["Omelette", "Noodle", "Pickle", "Turkey", "Salad"];
+        wordList = [
+          "Omelette",
+          "Noodle",
+          "Pickle",
+          "Turkey",
+          "Salad",
+          "Cornflakes",
+          "Mustard",
+          "Sugar",
+          "Pizza",
+          "Steak"
+        ];
         wordList.shuffle();
         break;
       case "Animal":
-        wordList = ["Elephant", "Rabbit", "Cat", "Eagle", "Frog"];
+        wordList = [
+          "Elephant",
+          "Rabbit",
+          "Cat",
+          "Eagle",
+          "Frog",
+          "Hamster",
+          "Hawk",
+          "Owl",
+          "Vulture",
+          "Crocodile"
+        ];
         wordList.shuffle();
         break;
       case "Weather":
-        wordList = ["Rainy", "Cyclone", "Cloudy", "Temperature", "Lightning"];
+        wordList = [
+          "Rainy",
+          "Cyclone",
+          "Cloudy",
+          "Temperature",
+          "Lightning",
+          "Sunrise",
+          "Drizzle",
+          "Flood",
+          "Whirlwind",
+          "Blizzard"
+        ];
         wordList.shuffle();
         break;
       case "Fruit":
-        wordList = ["Mango", "Orange", "Apricot", "Coconut", "Apple"];
+        wordList = [
+          "Mango",
+          "Orange",
+          "Apricot",
+          "Coconut",
+          "Apple",
+          "Rambutan",
+          "Durian",
+          "Grape",
+          "Tamarind",
+          "Plum"
+        ];
         wordList.shuffle();
         break;
       case "Color":
-        wordList = ["Black", "White", "Purple", "Pink", "Brown", "Gray"];
+        wordList = [
+          "Black",
+          "White",
+          "Purple",
+          "Pink",
+          "Brown",
+          "Gray",
+          "Yellow",
+          "Silver",
+          "Green",
+          "Blue",
+          "Blond",
+          "Indigo"
+        ];
         wordList.shuffle();
         break;
       case "Body":
         wordList = [
           "Shoulder",
-          "Knee",
+          "navel",
           "Chest",
           "Forehead",
           "Eyelash",
-          "Cheek"
+          "Cheek",
+          "Foot",
+          "Eyebrow",
+          "Neck",
+          "Tooth",
+          "Earlobe",
+          "Thumb"
         ];
         wordList.shuffle();
         break;
@@ -101,16 +169,26 @@ class _PracticeState extends State<Practice> {
     }
   }
 
-  void checkAnswer(String word) {
+  void checkAnswer(String word) async {
     if (word.toLowerCase() == wordList[current].toLowerCase()) {
       setState(() {
         containerColor = Colors.green;
+        checkAns = true;
       });
-      Future.delayed(const Duration(seconds: 1), () {
+
+      var translationResult =
+          await translator.translate(wordList[current], to: 'th');
+      setState(() {
+        translation = translationResult.text;
+      });
+
+      Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           containerColor = const Color.fromARGB(255, 175, 174, 174);
           current++;
           lastWords = '';
+          translation = '';
+          checkAns = false;
         });
       });
     } else if (word.toLowerCase() != wordList[current].toLowerCase() &&
@@ -125,6 +203,7 @@ class _PracticeState extends State<Practice> {
       });
     }
   }
+
   void handleMicButtonPressed() {
     setState(() {
       isListening = true;
@@ -137,7 +216,6 @@ class _PracticeState extends State<Practice> {
       stopListening();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +262,7 @@ class _PracticeState extends State<Practice> {
               ),
             ),
             SizedBox(height: screenHeight * 0.02),
-            if (lastWords.isNotEmpty)
+            if (lastWords.isNotEmpty && translation.isEmpty && !checkAns)
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
@@ -192,12 +270,23 @@ class _PracticeState extends State<Practice> {
                   style: TextStyle(fontSize: screenWidth * 0.05),
                 ),
               ),
-            if (lastWords.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+            if (lastWords.isNotEmpty && translation.isNotEmpty && checkAns)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  ' ',
-                  style: TextStyle(fontSize: 18),
+                  'You said: $lastWords $translation',
+                  style: TextStyle(fontSize: screenWidth * 0.05),
+                ),
+              ),
+            if (lastWords.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'You said:',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             if (!speechEnabled)
